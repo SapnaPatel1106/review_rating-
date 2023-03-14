@@ -1,32 +1,31 @@
-const mangoose=require('mongoose')
+const mongoose = require('mongoose')
 
-const reviewModelSchema= new mangoose.Schema({
-    userName : {
+
+const reviewModelSchema = new mongoose.Schema({
+    enterYourReview: {
         type: String,
-        required : true,
+        required: true,
     },
-    userEmail : {
-        type: String,
-        required : true,
-    },
-    subject : {
-        type: String,
-        required : true,
-    },
-    enterYourReview : {
-        type: String,
-        required : true,
-    },
-    rating : {
+    rating: {
         type: Number,
-        required : true,
+        required: true,
     },
-    
-    isActive : {
+    isActive: {
         type: Boolean,
-        required : true,
-        default : true,
+        required: true,
+        default: true,
+    },
+    company_id : {  
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'company'
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'user'
     },
 })
-compModelSchema.set('timestamps',true)
-module.exports=mongoose.model('user',compModelSchema)
+
+reviewModelSchema.set('timestamps', true)
+module.exports = mongoose.model('review', reviewModelSchema)

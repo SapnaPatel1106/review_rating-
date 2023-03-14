@@ -1,40 +1,47 @@
-const mangoose=require('mongoose')
+const { number } = require('joi')
+const mongoose = require('mongoose')
 
-const userModelSchema= new mangoose.Schema({
-    userName : {
+
+const userModelSchema = new mongoose.Schema({
+    userName: {
         type: String,
-        required : true,
+        required: true,
     },
-    userEmail : {
+    userEmail: {
         type: String,
-        required : true,
+        required: true,
     },
-    password : {
+    password: {
         type: String,
-        required : true,
+        required: true,
     },
-    city : {
+    city: {
         type: String,
-        required : true,
+        required: true,
     },
-    state : {
+    state: {
         type: String,
-        required : true,
+        required: true,
     },
-    profilePic : {
+    phone_no: {
+        type: Number,
+        required: true,
+    },
+    profilePic: {
         type: String,
-        required : true,
+
     },
-    userRole : {
+    userRole: {
         type: String,
-        required : true,
-        default : 'user',
+
+        default: 'user',
     },
-    isActive : {
+    isActive: {
         type: Boolean,
-        required : true,
-        default : true,
+        required: true,
+        default: true,
     },
 })
-userModelSchema.set('timestamps',true)
-module.exports=mongoose.model('user',userModelSchema)
+
+userModelSchema.set('timestamps', true)
+module.exports = mongoose.model('user', userModelSchema)

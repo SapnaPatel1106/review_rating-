@@ -1,54 +1,27 @@
-const express =require ('express')
-
-const bodyparser=require('body-parser')
-const {application} = require("express");
-const app =express();
-const port=9000;
-
-const mongoose = require("mongoose");
-app.use(bodyparser.urlencoded({extended:false}))
+const express = require('express')
+const app = express();
+app.use(express.json());
+require('./models/config')
+const dotenv = require('dotenv')  //.env file 
+dotenv.config()
+const cron = require("node-cron");
+const { application } = require("express");
+app.use(express.urlencoded({ extended: true }));
+const bodyparser = require('body-parser')
 app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({ extended: false }))
 
-//const { response } = require('express');
+const userRouter = require('./Routers/userRouters')
+const commonRoutes = require('./Routers/commonRoutes')
+const reviewRoutes = require('./Routers/reviewRoutes')
+const companyRoutes = require('./Routers/companyRoutes')
+const userModelSchema = require('./models/userModelSchema')
+const { transporter, mailOptions } = require('./Service/emailService')
 
-mongoose.set("strictQuery",false);
-mongoose.connect("mongodb://127.0.0.1:27017/demodb",{
-    useNewUrlParser:"true",
-});
-mongoose.connection.on("error",(err)=>{
-    console.log("mongoose connection Error",err)
-});
-mongoose.connection.on("connected",(err,res)=>{
-    console.log("mongoose is connected.",err)
-});
+app.use("/",commonRoutes)
 
-app.get("/",function(req,res){
-    return res.send({msg : "Welcome to nodejs development"})
+const server = app.listen(process.env.PORT, function (req, res) {
+    console.log(`server is running on port no :${process.env.port}`);
 })
 
-app.get("/detail",function(req,res){
-    res.send({msg : "Hello World"})
-})
-
-app.post("/signup",function(req,res){
-    console.log(req,res)
-    const{name,email}=req.body
-    res.send({msg: "API created by post method"})
-})
-
-app.put("/put",function(req,res){
-    res.send({msg: "API created by put method"})
-})
-
-app.patch("/patch",function(req,res){
-    res.send({msg: "API created by patch method"})
-})
-
-app.delete("/delete",function(req,res){
-    res.send({msg: "API created by delete method"})
-})
-
-
-app.listen(port,()=>{
-    console.log(`server is running on port no :${port}`);
-})
+module.exports = server
